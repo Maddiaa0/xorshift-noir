@@ -2,7 +2,9 @@
 
 # xorshift-noir • ![license](https://img.shields.io/github/license/abigger87/femplate?label=license) ![solidity](https://img.shields.io/badge/solidity-^0.8.15-lightgrey)
 
-Verify random number generation.
+## Overview
+
+A minimal random number generator in noir with a matching typescript implementation. Use the same randomness in the client as within your circuits.
 
 # Generated from [nplate](https://github.com/whitenois3/nplate)
 
