@@ -24,23 +24,19 @@ class TsXorShift {
   constructor(seed: number) {
     let n = pedersen.hashToField(Buffer.from([seed]));
     let a = BigNumber.from(n);
-    this.next = a.mask(64);
-  }
-
-  getU64(): BigNumber {
-    let x = this.next;
-    let a = x.shl(13);
-    x = x.xor(a).mask(64);
-    let b = x.shr(17);
-    x = x.xor(b).mask(64);
-    let c = x.shl(5);
-    x = x.xor(c).mask(64);
-    this.next = x.mask(64);
-    return x;
+    this.next = a.mask(32);
   }
 
   getU32(): BigNumber {
-    return this.getU64().mask(32);
+    let x = this.next;
+    let a = x.shl(13);
+    x = x.xor(a).mask(32);
+    let b = x.shr(17);
+    x = x.xor(b).mask(32);
+    let c = x.shl(5);
+    x = x.xor(c).mask(32);
+    this.next = x.mask(32);
+    return x;
   }
 }
 
@@ -62,12 +58,12 @@ describe("Test Rand generator ts", () => {
     verifier = v;
   });
 
-  it("The snark version should verify the random number generation for the same seed u64", async () => {
+  it("The snark version should verify the random number generation for the same seed u32", async () => {
     let seed = 0x1;
     let rand = new TsXorShift(seed);
     let generatedArr: BigNumber[] = [];
     for (let i = 0; i < 5; i++) {
-      generatedArr.push(rand.getU64());
+      generatedArr.push(rand.getU32());
     }
     console.log(generatedArr.map((i) => i.toHexString()));
     let abi = {

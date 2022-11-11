@@ -2,24 +2,24 @@
 use dep::std;
 
 struct XorShift {
-    next: u64    
+    next: u32
 }
 
 impl XorShift {
     fn new(seed: Field) -> XorShift {
         let rand_seed = std::hash::pedersen([seed]);
-        let next = rand_seed[0] as u64;
+        let next = rand_seed[0] as u32;
         
         XorShift {
             next
         }
     }
 
-    fn check_next(self: Self) -> u64 {        
-        self.next as u64
+    fn check_next(self: Self) -> u32 {        
+        self.next as u32
     }
 
-    fn get_next(self: Self) -> u64 {
+    fn get_next(self: Self) -> u32 {
       let mut x = self.next;
       x = x ^ x << 13;
       x = x ^ x >> 17;
@@ -28,22 +28,18 @@ impl XorShift {
     }
 }
 
-// Return 10 random numbers to test against
-fn main(seed : Field) -> pub [u64;5] {
+// Return 5 random numbers to test against
+fn main(seed : Field) -> pub [u32;5] {
     let mut random = XorShift::new(seed);
 
     // TODO: Currently using this method as mutating self in impl defs is currently broken
-    let rand_num = XorShift::get_next(random);
-    random.next = rand_num;
-    let rand_num2 = XorShift::get_next(random);
-    random.next = rand_num2;
-    let rand_num3 = XorShift::get_next(random);
-    random.next = rand_num3;
-    let rand_num4 = XorShift::get_next(random);
-    random.next = rand_num4;
-    let rand_num5 = XorShift::get_next(random);
+    let mut rands: [u32; 5] = [0; 5];
+    for i in 0..5 {
+        rands[i] = XorShift::get_next(random);
+        random.next = rands[i];    
+    };
     
-    [rand_num, rand_num2, rand_num3, rand_num4, rand_num5]
+    rands
 }
 
 
