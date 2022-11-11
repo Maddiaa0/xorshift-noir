@@ -6,6 +6,11 @@
 
 A minimal random number generator in noir with a matching typescript implementation. Use the same randomness in the client as within your circuits.
 
+**Components**
+
+1. `circuits/main.nr` contains an implementation of xorshift
+2. `test/test.ts` contains a matching TsXorshift that generates the same numbers
+
 # Generated from [nplate](https://github.com/whitenois3/nplate)
 
 A **Simple**, **Minimalist** Template for Noir Projects.
